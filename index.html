@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome VRX 💗</title>
+  <style>
+    :root {
+      --pink: #ff78ad;
+      --pink-dark: #e64e8a;
+      --ink: #66364d;
+      --soft: #fff0f6;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, #ffe0ed 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 75%, #ffd2e5 0 3px, transparent 4px),
+        linear-gradient(135deg, #fff7fa, #ffe6f0);
+      background-size: 80px 80px, 100px 100px, auto;
+    }
+
+    .heart {
+      position: fixed;
+      color: #ff9dc2;
+      opacity: .6;
+      pointer-events: none;
+      animation: float 5s ease-in-out infinite;
+      font-size: clamp(18px, 4vw, 30px);
+    }
+    .heart.one { top: 12%; left: 12%; }
+    .heart.two { top: 18%; right: 13%; animation-delay: 1s; }
+    .heart.three { bottom: 14%; left: 17%; animation-delay: 2s; }
+    .heart.four { bottom: 12%; right: 15%; animation-delay: .5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-8deg); }
+      50% { transform: translateY(-14px) rotate(8deg); }
+    }
+
+    .card {
+      width: min(100%, 470px);
+      min-height: 330px;
+      position: relative;
+      text-align: center;
+      padding: clamp(28px, 7vw, 48px) 24px;
+      border: 1px solid rgba(255, 120, 173, .25);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, .88);
+      box-shadow: 0 20px 60px rgba(190, 78, 124, .15);
+      backdrop-filter: blur(10px);
+    }
+
+    .tiny { color: var(--pink-dark); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; }
+    h1 { margin: 12px 0; font-size: clamp(32px, 8vw, 44px); line-height: 1.12; }
+    p { font-size: 16px; line-height: 1.6; color: #93647a; }
+    .emoji { font-size: 44px; margin-bottom: 8px; }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      min-height: 54px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 27px;
+      min-width: 112px;
+      font: inherit;
+      font-weight: 750;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      touch-action: manipulation;
+    }
+    button:hover { transform: translateY(-2px); }
+    .primary {
+      color: white;
+      background: linear-gradient(135deg, #ff8fba, #ed6099);
+      box-shadow: 0 8px 18px rgba(237, 96, 153, .25);
+    }
+    .secondary { color: #a65d7d; background: #ffe8f1; }
+    .hidden { display: none !important; }
+    #noButton { z-index: 5; }
+    .note { font-size: 12px; margin-top: 26px; color: #c18ca4; }
+    @media (max-width: 420px) {
+      .card { min-height: 350px; }
+      .buttons { gap: 10px; }
+      button { min-width: 100px; padding: 13px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <span class="heart one">♡</span>
+  <span class="heart two">♥</span>
+  <span class="heart three">♡</span>
+  <span class="heart four">♥</span>
+
+  <main class="card" id="card">
+    <section id="welcome">
+      <div class="emoji">💌</div>
+      <div class="tiny">a tiny surprise for you</div>
+      <h1>Welcome VRX</h1>
+      <p>I have a quick question for you...</p>
+      <div class="buttons">
+        <button class="primary" id="startButton">Let's go ✨</button>
+      </div>
+    </section>
+
+    <section id="humanQuestion" class="hidden">
+      <div class="emoji">🤔</div>
+      <div class="tiny">question 01</div>
+      <h1>Are you human?</h1>
+      <p>Be honest now 👀</p>
+      <div class="buttons">
+        <button class="primary" id="humanYes">Yes</button>
+        <button class="secondary" id="humanNo">No</button>
+      </div>
+    </section>
+
+    <section id="cuteQuestion" class="hidden">
+      <div class="emoji">🥹</div>
+      <div class="tiny">question 02</div>
+      <h1>Are you cute?</h1>
+      <p>Choose wisely... 💗</p>
+      <div class="buttons" id="cuteButtons">
+        <button class="primary" id="cuteYes">Yes, obviously</button>
+        <button class="secondary" id="noButton">No</button>
+      </div>
+      <p class="note" id="hint">Psst... try pressing “No” 😈</p>
+    </section>
+
+    <section id="ending" class="hidden">
+      <div class="emoji">💖</div>
+      <div class="tiny">correct answer!</div>
+      <h1>I knew it!</h1>
+      <p>VRX is officially cute. No arguments allowed. 🫶</p>
+      <div class="buttons">
+        <button class="primary" id="restartButton">Again? ↻</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const screens = ["welcome", "humanQuestion", "cuteQuestion", "ending"];
+    function showScreen(id) {
+      screens.forEach(screenId => {
+        document.getElementById(screenId).classList.toggle("hidden", screenId !== id);
+      });
+    }
+
+    document.getElementById("startButton").addEventListener("click", () => showScreen("humanQuestion"));
+    document.getElementById("humanYes").addEventListener("click", () => showScreen("cuteQuestion"));
+    document.getElementById("humanNo").addEventListener("click", () => showScreen("cuteQuestion"));
+    document.getElementById("cuteYes").addEventListener("click", () => showScreen("ending"));
+    document.getElementById("restartButton").addEventListener("click", () => showScreen("welcome"));
+
+    const noButton = document.getElementById("noButton");
+    const card = document.getElementById("card");
+    const hint = document.getElementById("hint");
+
+    function moveNoButton() {
+      // Keep the button inside the visible card area.
+      const cardRect = card.getBoundingClientRect();
+      const buttonRect = noButton.getBoundingClientRect();
+      const padding = 16;
+      const maxX = Math.max(padding, cardRect.width - buttonRect.width - padding);
+      const maxY = Math.max(padding, cardRect.height - buttonRect.height - padding);
+
+      noButton.style.position = "absolute";
+      noButton.style.left = (padding + Math.random() * (maxX - padding)) + "px";
+      noButton.style.top = (padding + Math.random() * (maxY - padding)) + "px";
+      noButton.style.zIndex = "10";
+      hint.textContent = "Hehe, too slow 😈 try again!";
+    }
+
+    // Mouse users: run away when they approach. Touch users: run away on tap.
+    noButton.addEventListener("pointerenter", (event) => {
+      if (event.pointerType === "mouse") moveNoButton();
+    });
+    noButton.addEventListener("click", moveNoButton);
+    noButton.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
+    // Reset the runaway button when the user returns to the welcome screen.
+    document.getElementById("restartButton").addEventListener("click", () => {
+      noButton.style.position = "";
+      noButton.style.left = "";
+      noButton.style.top = "";
+      hint.textContent = "Psst... try pressing “No” 😈";
+    });
+  </script>
+</body>
+</html>
